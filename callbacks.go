@@ -63,6 +63,7 @@ func (p plugin) before(name string, db *gorm.DB) {
 	ctx, span := p.tracer.Start(stmt.Context, name)
 	span.SetAttributes(
 		attribute.String("gorm.table", stmt.Table),
+		attribute.String("db.table", stmt.Table),
 	)
 	stmt.Context = ctx
 }
@@ -77,6 +78,9 @@ func (p plugin) after(db *gorm.DB) {
 		span.SetStatus(codes.Ok, "OK")
 	}
 	span.SetAttributes(
+		attribute.String("db.statement", db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)),
+		attribute.String("db.statement", db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)),
+
 		attribute.String("gorm.statement", db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)),
 		attribute.Int64("gorm.rowsAffected", db.RowsAffected),
 	)
