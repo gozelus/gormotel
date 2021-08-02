@@ -1,4 +1,4 @@
-module github.com/drrrMikado/gormotel
+module github.com/gozleus/gormotel
 
 go 1.16
 
